@@ -1,0 +1,19 @@
+{
+  "name": "acoustic-line",
+  "version": "1.0.0",
+  "description": "CoffeeScript templating for FreeSwitch XML",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/shimaore/acoustic-line"
+  },
+  "author": "Stéphane Alnet <stephane@shimaore.net> (http://stephane.shimaore.net/)",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/shimaore/acoustic-line/issues"
+  },
+  "homepage": "https://github.com/shimaore/acoustic-line"
+}
