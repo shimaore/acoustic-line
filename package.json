@@ -4,6 +4,7 @@
   "description": "CoffeeScript templating for FreeSwitch XML",
   "main": "index.js",
   "scripts": {
+    "prepublish": "coffee -m -c index.coffee.md",
     "test": "mocha"
   },
   "repository": {
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/shimaore/acoustic-line/issues"
   },
-  "homepage": "https://github.com/shimaore/acoustic-line"
+  "homepage": "https://github.com/shimaore/acoustic-line",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1"
+  }
 }
