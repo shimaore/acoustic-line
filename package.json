@@ -12,7 +12,7 @@
     "url": "github.com/shimaore/acoustic-line"
   },
   "author": "Stéphane Alnet <stephane@shimaore.net> (http://stephane.shimaore.net/)",
-  "license": "Unlicense",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/shimaore/acoustic-line/issues"
   },
