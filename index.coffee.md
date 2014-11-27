@@ -128,6 +128,9 @@
       network_lists: (args...) ->
         @tag 'network-lists', args...
 
+      anti_action: (args...) ->
+        @selfClosingTag 'anti-action', args...
+
       #
       # Filters
       #
@@ -156,7 +159,7 @@
         bound = {}
 
         boundMethodNames = [].concat(
-          'comment doctype escape normalizeArgs raw render renderable text use network_lists'.split ' '
+          'comment doctype escape normalizeArgs raw render renderable text use network_lists anti_action'.split ' '
           merge_elements 'regular', 'void'
         )
         for method in boundMethodNames

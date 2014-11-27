@@ -8,7 +8,7 @@
         .to.equal '<?xml version="1.0" encoding="utf-8" ?>'
 
       it 'simple document', ->
-        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile} = require '../index.coffee.md'
+        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action} = require '../index.coffee.md'
         expect render ->
           doctype()
           document type:'freeswitch/xml', ->
@@ -40,6 +40,13 @@
                       param name:'sip-trace', value:true
                       param name:'sip-port', value:5060
                       param name:'username', value:'example freeswitch'
+            section name:'dialplan', ->
+              context name:'default', ->
+                extension name:'user', ->
+                  condition field:'destination_number', expression:'^2\d+$', ->
+                    action application:'answer'
+                    action application:'play', data:'some_file.wav'
+                    anti_action application:'hangup'
         .to.equal '''
           <?xml version="1.0" encoding="utf-8" ?>
           <document type="freeswitch/xml">
@@ -85,6 +92,17 @@
                   </profile>
                 </profiles>
               </configuration>
+            </section>
+            <section name="dialplan">
+              <context name="default">
+                <extension name="user">
+                  <condition field="destination_number" expression="^2\d+$">
+                    <action application="answer"/>
+                    <action application="play" data="some_file.wav"/>
+                    <anti-action application="hangup"/>
+                  </condition>
+                </extension>
+              </context>
             </section>
           </document>
         '''.replace /\n */g, ''
