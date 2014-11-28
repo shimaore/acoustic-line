@@ -1,5 +1,5 @@
     doctypes =
-      'xml': '<?xml version="1.0" encoding="utf-8" ?>'
+      'xml': '<?xml version="1.0" encoding="utf-8" ?>\n'
 
     elements =
       # requiring a closing tag
@@ -95,15 +95,15 @@
 
       tag: (tagName, args...) ->
         {attrs,contents} = @normalizeArgs args
-        @raw "<#{tagName}#{@renderAttrs attrs}>"
+        @raw "<#{tagName}#{@renderAttrs attrs}>\n"
         @renderContents contents
-        @raw "</#{tagName}>"
+        @raw "</#{tagName}>\n"
 
       selfClosingTag: (tag, args...) ->
         {attrs,contents} = @normalizeArgs args
         if contents
           throw new Error "AcousticLine: <#{tag}/> must not have content. Attempted to nest #{contents}"
-        @raw "<#{tag}#{@renderAttrs attrs}/>"
+        @raw "<#{tag}#{@renderAttrs attrs}/>\n"
 
       comment: (text) ->
         @raw "<!-- #{@escape text} -->"

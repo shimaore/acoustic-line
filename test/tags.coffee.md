@@ -5,7 +5,7 @@
       it 'doctype', ->
         {render,doctype} = require '../index.coffee.md'
         expect render -> doctype()
-        .to.equal '<?xml version="1.0" encoding="utf-8" ?>'
+        .to.equal '<?xml version="1.0" encoding="utf-8" ?>\n'
 
       it 'simple document', ->
         {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action} = require '../index.coffee.md'
@@ -105,4 +105,5 @@
               </context>
             </section>
           </document>
-        '''.replace /\n */g, ''
+
+        '''.replace /\n */g, '\n'
