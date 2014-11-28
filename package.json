@@ -1,6 +1,6 @@
 {
   "name": "acoustic-line",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "CoffeeScript templating for FreeSwitch XML",
   "main": "index.js",
   "scripts": {
