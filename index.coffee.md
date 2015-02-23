@@ -3,7 +3,7 @@
 
     elements =
       # requiring a closing tag
-      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition'
+      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings'
 
       # self-closing
       void: 'param load node action'
