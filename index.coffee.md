@@ -3,10 +3,10 @@
 
     elements =
       # requiring a closing tag
-      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings map'
+      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings'
 
       # self-closing
-      void: 'param load node action'
+      void: 'param load node action map'
 
     # Create a unique list of element names merging the desired groups.
     merge_elements = (args...) ->
