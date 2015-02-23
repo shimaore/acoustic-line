@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepublish": "coffee -m -c index.coffee.md",
+    "pretest": "npm install",
     "test": "mocha"
   },
   "repository": {
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/shimaore/acoustic-line",
   "devDependencies": {
     "chai": "^1.10.0",
+    "coffee-script": "^1.9.1",
     "mocha": "^2.0.1"
   }
 }
