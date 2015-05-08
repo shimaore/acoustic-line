@@ -3,12 +3,12 @@
     describe 'Tags', ->
 
       it 'doctype', ->
-        {render,doctype} = require '../index.coffee.md'
+        {render,doctype} = require '../index'
         expect render -> doctype()
         .to.equal '<?xml version="1.0" encoding="utf-8" ?>\n'
 
       it 'simple document', ->
-        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action} = require '../index.coffee.md'
+        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action,language,macros,macro,input,match} = require '../index'
         expect render ->
           doctype()
           document type:'freeswitch/xml', ->
@@ -16,11 +16,11 @@
               configuration name:'switch.conf', ->
                 settings ->
                   param name:'switchname', value:'my-switch'
-                  param name:'loglevel', value:'debug'
-              configuration name:'modules.conf', ->
+                  param 'loglevel', 'debug'
+              configuration 'modules.conf', ->
                 modules ->
                   load module:'mod_commands'
-                  load module:'mod_dptools'
+                  load 'mod_dptools'
               configuration name:'acl.conf', ->
                 network_lists ->
                   list name:'local', default:'deny', ->
@@ -32,7 +32,7 @@
               configuration name:'sofia.conf', ->
                 global_settings ->
                   param name:'log-level', value:1
-                  param name:'debug-presence', value:0
+                  param 'debug-presence', 0
                 profiles ->
                   profile name:'example', ->
                     settings ->
@@ -40,13 +40,35 @@
                       param name:'sip-trace', value:true
                       param name:'sip-port', value:5060
                       param name:'username', value:'example freeswitch'
-            section name:'dialplan', ->
+                  profile name:'example-2', ->
+                    settings ->
+                      param 'debug', 2
+                      param 'sip-trace', true
+                      param 'sip-port', 5060
+                      param 'username', 'example freeswitch'
+                  profile name:'example-3', ->
+                    settings ->
+                      param 'debug', value:2
+                      param 'sip-trace', value:true
+                      param 'sip-port', value:5060
+                      param 'username', value:'example freeswitch'
+            section 'dialplan', ->
               context name:'default', ->
                 extension name:'user', ->
-                  condition field:'destination_number', expression:'^2\d+$', ->
+                  condition field:'destination_number', expression:'^2\\d+$', ->
                     action application:'answer'
-                    action application:'play', data:'some_file.wav'
+                    action application:'play', data:'some_file-1.wav'
+                    action application:'play', 'some_file-2.wav'
+                    action 'play', data:'some_file-3.wav'
+                    action 'play', 'some_file-4.wav'
                     anti_action application:'hangup'
+            section 'phrases', ->
+              macros ->
+                language 'fr', '$${sounds_dir}/fr/fr', ->
+                  macro 'say-single', ->
+                    input '^[*]$', break_on_match:true, ->
+                      match ->
+                        action function:'play-file', 'digits/star.wav'
         .to.equal '''
           <?xml version="1.0" encoding="utf-8" ?>
           <document type="freeswitch/xml">
@@ -90,19 +112,51 @@
                       <param name="username" value="example freeswitch"/>
                     </settings>
                   </profile>
+                  <profile name="example-2">
+                    <settings>
+                      <param name="debug" value="2"/>
+                      <param name="sip-trace" value="true"/>
+                      <param name="sip-port" value="5060"/>
+                      <param name="username" value="example freeswitch"/>
+                    </settings>
+                  </profile>
+                  <profile name="example-3">
+                    <settings>
+                      <param name="debug" value="2"/>
+                      <param name="sip-trace" value="true"/>
+                      <param name="sip-port" value="5060"/>
+                      <param name="username" value="example freeswitch"/>
+                    </settings>
+                  </profile>
                 </profiles>
               </configuration>
             </section>
             <section name="dialplan">
               <context name="default">
                 <extension name="user">
-                  <condition field="destination_number" expression="^2\d+$">
+                  <condition field="destination_number" expression="^2\\d+$">
                     <action application="answer"/>
-                    <action application="play" data="some_file.wav"/>
+                    <action application="play" data="some_file-1.wav"/>
+                    <action application="play" data="some_file-2.wav"/>
+                    <action application="play" data="some_file-3.wav"/>
+                    <action application="play" data="some_file-4.wav"/>
                     <anti-action application="hangup"/>
                   </condition>
                 </extension>
               </context>
+            </section>
+            <section name="phrases">
+              <macros>
+                <language name="fr" sound-path="$${sounds_dir}/fr/fr">
+                  <macro name="say-single">
+                    <input pattern="^[*]$" break_on_match="true">
+                      <match>
+                        <action function="play-file" data="digits/star.wav"/>
+                      </match>
+                    </input>
+                  </macro>
+                </language>
+              </macros>
             </section>
           </document>
 

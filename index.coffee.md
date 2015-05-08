@@ -1,6 +1,9 @@
     doctypes =
       'xml': '<?xml version="1.0" encoding="utf-8" ?>\n'
 
+The (complete?) list of elements might be obtained by running `rgrep switch_xml_child | perl -ane ' /"([^"]+)"/ && print "$1\n"; ' | sort -u` from within the FreeSwitch source. (That gives me 219 different element types.)
+For now I only list the ones I use most of the time, but feel free to open a PR for any other, or create a plugin that extends `acoustic-line` to support these; in the meantime the `tag` method can be used to create any that's needed.
+
     elements =
       # requiring a closing tag
       regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros'
@@ -8,7 +11,8 @@
       # self-closing
       void: 'param load node action map'
 
-    # Create a unique list of element names merging the desired groups.
+Create a unique list of element names merging the desired groups.
+
     merge_elements = (args...) ->
       result = []
       for a in args
@@ -16,8 +20,15 @@
           result.push element unless element in result
       result
 
+There's no issue with attribute names that contain underscore as they may easily be expressed as-such in JavaScript.
+However for the few cases where this is needed (`digit-len`, `duration-header`, ..) you may use CamelCase to express a dash (`digitLen`, `durationHeader`, ...).
+The (complete?) list of attributes might be obtained by running `rgrep switch_xml_attr_soft src/ | perl -ane ' /"([^"]+)"/ && print "$1\n"' | sort -u` from within the FreeSwitch source.
+
     decamelcaseify = (name) ->
       name.replace /[A-Z]/g, ($,$1) -> "-#{$1.toLowerCase()}"
+
+AcousticLine
+============
 
     class AcousticLine
       constructor: ->
@@ -154,18 +165,24 @@ For some tags we allow the user to specify one or more native values directly in
         @out += s
         null
 
-      #
-      # Special case in FreeSwitch XML syntax
-      #
+Special case in FreeSwitch XML syntax
+-------------------------------------
+
+These are tags I use frequently which do not follow the generic syntax.
+These could also be created by saying things like
+```
+{AcousticLine} = require 'acoustic-line'
+AcousticLine::network_lists = (args...) -> @tag 'network-lists', args...
+```
+
       network_lists: (args...) ->
         @tag 'network-lists', args...
 
       anti_action: (args...) ->
         @selfClosingTag 'anti-action', args...
 
-      #
-      # Filters
-      #
+Filters
+-------
 
       escape: (text) ->
         text.toString()
@@ -178,15 +195,15 @@ For some tags we allow the user to specify one or more native values directly in
       quote: (value) ->
         "\"#{value}\""
 
-      #
-      # Plugins
-      #
+Plugins
+-------
+
       use: (plugin) ->
         plugin this
 
-      #
-      # Binding
-      #
+Binding
+-------
+
       tags: ->
         bound = {}
 
@@ -199,6 +216,8 @@ For some tags we allow the user to specify one or more native values directly in
             bound[method] = (args...) => @[method].apply this, args
 
         return bound
+
+Automatically create elements listed in `regular` and `void`.
 
     for tagName in merge_elements 'regular'
       do (tagName) ->
