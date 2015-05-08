@@ -3,7 +3,7 @@
 
     elements =
       # requiring a closing tag
-      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings'
+      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros'
 
       # self-closing
       void: 'param load node action map'
@@ -52,7 +52,7 @@
 
         return " #{name}=#{@quote @escape value.toString()}"
 
-      attrOrder: ['application','data','name','value','field','expression','description']
+      attrOrder: ['application','function','data','name','value','field','expression','description']
       renderAttrs: (obj) ->
         result = ''
 
