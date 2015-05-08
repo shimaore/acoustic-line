@@ -105,16 +105,20 @@ For some tags we allow the user to specify one or more native values directly in
               if attr_name?
                 attrs[attr_name] = arg
               else
+                if contents? then throw new Error "AcousticLine: <#{tag}/> attempted to set content twice."
                 contents = arg
             when 'function'
+              if contents? then throw new Error "AcousticLine: <#{tag}/> attempted to set content twice."
               contents = arg
             when 'object'
               if arg.constructor == Object
                 for own attr_name, value of arg
                   attrs[decamelcaseify attr_name] = value
               else
+                if contents? then throw new Error "AcousticLine: <#{tag}/> attempted to set content twice."
                 contents = arg
             else
+              if contents? then throw new Error "AcousticLine: <#{tag}/> attempted to set content twice."
               contents = arg
 
         return {attrs,contents}
