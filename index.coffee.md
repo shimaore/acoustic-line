@@ -76,12 +76,34 @@
         else
           @text contents
 
-      normalizeArgs: (args) ->
+For some tags we allow the user to specify one or more native values directly in a syntax that "does what you expect".
+
+      valuedArgs:
+        action: ['application','data']
+        'anti-action': ['application','data']
+        condition: ['field','expression']
+        configuration: ['name']
+        context: ['name']
+        extension: ['name']
+        input: ['pattern','break_on_match']
+        language: ['name','sound-path']
+        load: ['module']
+        macro: ['name']
+        param: ['name','value']
+        section: ['name','description']
+
+      normalizeArgs: (tag,args) ->
         attrs = {}
         contents = null
         for arg, index in args when arg?
           switch typeof arg
-            when 'string', 'function', 'number', 'boolean'
+            when 'string', 'number', 'boolean'
+              attr_name = @valuedArgs[tag]?[index]
+              if attr_name?
+                attrs[attr_name] = arg
+              else
+                contents = arg
+            when 'function'
               contents = arg
             when 'object'
               if arg.constructor == Object
@@ -93,14 +115,14 @@
 
         return {attrs,contents}
 
-      tag: (tagName, args...) ->
-        {attrs,contents} = @normalizeArgs args
-        @raw "<#{tagName}#{@renderAttrs attrs}>\n"
+      tag: (tag, args...) ->
+        {attrs,contents} = @normalizeArgs tag, args
+        @raw "<#{tag}#{@renderAttrs attrs}>\n"
         @renderContents contents
-        @raw "</#{tagName}>\n"
+        @raw "</#{tag}>\n"
 
       selfClosingTag: (tag, args...) ->
-        {attrs,contents} = @normalizeArgs args
+        {attrs,contents} = @normalizeArgs tag, args
         if contents
           throw new Error "AcousticLine: <#{tag}/> must not have content. Attempted to nest #{contents}"
         @raw "<#{tag}#{@renderAttrs attrs}/>\n"
