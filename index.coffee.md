@@ -16,6 +16,9 @@
           result.push element unless element in result
       result
 
+    decamelcaseify = (name) ->
+      name.replace /[A-Z]/g, ($,$1) -> "-#{$1.toLowerCase()}"
+
     class AcousticLine
       constructor: ->
         @out = null
@@ -107,7 +110,8 @@ For some tags we allow the user to specify one or more native values directly in
               contents = arg
             when 'object'
               if arg.constructor == Object
-                attrs = arg
+                for own attr_name, value of arg
+                  attrs[decamelcaseify attr_name] = value
               else
                 contents = arg
             else
@@ -116,12 +120,14 @@ For some tags we allow the user to specify one or more native values directly in
         return {attrs,contents}
 
       tag: (tag, args...) ->
+        tag = decamelcaseify tag
         {attrs,contents} = @normalizeArgs tag, args
         @raw "<#{tag}#{@renderAttrs attrs}>\n"
         @renderContents contents
         @raw "</#{tag}>\n"
 
       selfClosingTag: (tag, args...) ->
+        tag = decamelcaseify tag
         {attrs,contents} = @normalizeArgs tag, args
         if contents
           throw new Error "AcousticLine: <#{tag}/> must not have content. Attempted to nest #{contents}"
