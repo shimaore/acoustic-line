@@ -6,7 +6,7 @@ For now I only list the ones I use most of the time, but feel free to open a PR 
 
     elements =
       # requiring a closing tag
-      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros'
+      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros params'
 
       # self-closing
       void: 'param load node action map'
