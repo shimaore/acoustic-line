@@ -6,7 +6,7 @@ For now I only list the ones I use most of the time, but feel free to open a PR 
 
     elements =
       # requiring a closing tag
-      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros params'
+      regular: 'document section configuration settings modules list global_settings profiles profile context extension condition mappings language macro match input macros params gateway gateways'
 
       # self-closing
       void: 'param load node action map'
@@ -99,6 +99,7 @@ For some tags we allow the user to specify one or more native values directly in
         configuration: ['name']
         context: ['name']
         extension: ['name']
+        gateway: ['name']
         input: ['pattern','break_on_match']
         language: ['name','sound-path']
         load: ['module']
