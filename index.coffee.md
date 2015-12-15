@@ -98,13 +98,16 @@ For some tags we allow the user to specify one or more native values directly in
         condition: ['field','expression']
         configuration: ['name']
         context: ['name']
+        document: ['type']
         extension: ['name']
         gateway: ['name']
         input: ['pattern','break_on_match']
         language: ['name','sound-path']
         load: ['module']
         macro: ['name']
+        map: ['name','value']
         param: ['name','value']
+        profile: ['name']
         section: ['name','description']
 
       normalizeArgs: (tag,args) ->
