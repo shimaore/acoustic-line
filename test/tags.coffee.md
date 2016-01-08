@@ -7,6 +7,15 @@
         expect render -> doctype()
         .to.equal '<?xml version="1.0" encoding="utf-8" ?>\n'
 
+      it 'tag', ->
+        {render,tag,param} = require '../index'
+        expect render -> tag 'foo', ok:true, version:'1.9.2'
+        .to.equal '<foo ok="true" version="1.9.2">\n</foo>\n'
+        expect render -> tag 'foo', ok:true, version:'1.9.2', -> 'hello'
+        .to.equal '<foo ok="true" version="1.9.2">\nhello</foo>\n'
+        expect render -> tag 'foo', ok:true, version:'1.9.2', -> param 'silly','dog'
+        .to.equal '<foo ok="true" version="1.9.2">\n<param name="silly" value="dog"/>\n</foo>\n'
+
       it 'simple document', ->
         {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action,language,macros,macro,input,match} = require '../index'
         expect render ->

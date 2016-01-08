@@ -212,7 +212,7 @@ Binding
         bound = {}
 
         boundMethodNames = [].concat(
-          'comment doctype escape normalizeArgs raw render renderable text use network_lists anti_action'.split ' '
+          'comment doctype escape normalizeArgs raw render renderable tag text use network_lists anti_action'.split ' '
           merge_elements 'regular', 'void'
         )
         for method in boundMethodNames
