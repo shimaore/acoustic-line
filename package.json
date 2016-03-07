@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/shimaore/acoustic-line",
   "devDependencies": {
-    "chai": "^3.4.0",
+    "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
-    "mocha": "^2.3.3"
+    "mocha": "^2.4.5"
   }
 }
