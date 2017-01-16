@@ -25,7 +25,7 @@ However for the few cases where this is needed (`digit-len`, `duration-header`, 
 The (complete?) list of attributes might be obtained by running `rgrep switch_xml_attr_soft src/ | perl -ane ' /"([^"]+)"/ && print "$1\n"' | sort -u` from within the FreeSwitch source.
 
     decamelcaseify = (name) ->
-      name.replace /[A-Z]/g, ($,$1) -> "-#{$1.toLowerCase()}"
+      name.replace /([A-Z])/g, ($,$1) -> "-#{$1.toLowerCase()}"
 
 AcousticLine
 ============

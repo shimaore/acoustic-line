@@ -15,6 +15,8 @@
         .to.equal '<foo ok="true" version="1.9.2">\nhello</foo>\n'
         expect render -> tag 'foo', ok:true, version:'1.9.2', -> param 'silly','dog'
         .to.equal '<foo ok="true" version="1.9.2">\n<param name="silly" value="dog"/>\n</foo>\n'
+        expect render -> tag 'foo', ok:true, minimalVersion:'1.9.2'
+        .to.equal '<foo ok="true" minimal-version="1.9.2">\n</foo>\n'
 
       it 'simple document', ->
         {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action,language,macros,macro,input,match} = require '../index'
