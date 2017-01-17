@@ -19,7 +19,7 @@
         .to.equal '<foo ok="true" minimal-version="1.9.2">\n</foo>\n'
 
       it 'simple document', ->
-        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action,language,macros,macro,input,match} = require '../index'
+        {render,doctype,document,section,configuration,settings,param,modules,load,network_lists,list,node,global_settings,profiles,profile,context,extension,condition,action,anti_action,language,macros,macro,input,match,callerControls,group,control} = require '../index'
         expect render ->
           doctype()
           document type:'freeswitch/xml', ->
@@ -63,6 +63,10 @@
                       param 'sip-trace', value:true
                       param 'sip-port', value:5060
                       param 'username', value:'example freeswitch'
+              configuration name:'conference.conf', ->
+                callerControls ->
+                  group name:'default', ->
+                    control action:'mute', digits:0
             section 'dialplan', ->
               context name:'default', ->
                 extension name:'user', ->
@@ -140,6 +144,13 @@
                     </settings>
                   </profile>
                 </profiles>
+              </configuration>
+              <configuration name="conference.conf">
+                <caller-controls>
+                  <group name="default">
+                    <control action="mute" digits="0"/>
+                  </group>
+                </caller-controls>
               </configuration>
             </section>
             <section name="dialplan">
